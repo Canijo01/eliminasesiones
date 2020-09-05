@@ -33,7 +33,7 @@ else:
 
 for secciones in config.sections():
     for variable in config.items(secciones):
-        print(variable)
+        #print(variable)
         dato = variable[1]
         if variable[0] in os.environ:
             dato = os.environ[variable[0]]
@@ -49,12 +49,12 @@ headers = {
     'Authorization': "Token %s" % (token)
 }
 ### Obtener el uri del dominio
-domain_uri = getdomainuri(headers, url, DOMAIN)
+domain_uri = getdomainuri(headers, URL, DOMAIN)
 
 ### Inicio del programa
 ### Obtener las sesiones abiertas en el dominio
 print ("Verificado no hay sesiones duplicadas para %s:"%(user))
-sessions_list = usersessionslist(headers,url, DOMAIN,VERIFY)
+sessions_list = usersessionslist(headers,URL, DOMAIN,VERIFY)
 if sessions_list.status_code == requests.codes.ok:
     #print(json.dumps(json.loads(sessions_list.text),indent=4,sort_keys=True))
     sesionesabiertas=json.loads(sessions_list.text)
@@ -69,7 +69,7 @@ if sessions_list.status_code == requests.codes.ok:
             duplicadosSorteados=sorted(duplicados,key=lambda date: datetime.datetime.strptime(date["start"] + "Z", "%Y-%m-%dT%H:%M:%S.%f%z"),reverse=1)
             for i in range (1,len(duplicadosSorteados)):
                 print ("borrando sesion:%s"% duplicadosSorteados[i]["session_id"])
-                closesession(headers,url,duplicadosSorteados[i]["session_id"],VERIFY)
+                closesession(headers,URL,duplicadosSorteados[i]["session_id"],VERIFY)
         else:
             print("Usuario % solo tiene una sesion abiertas")
 
